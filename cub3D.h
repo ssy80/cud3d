@@ -18,7 +18,20 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <stdbool.h>
+# include <math.h>
+# include <X11/keysym.h>
+# include <X11/X.h>
 # include "minilibx-linux/mlx.h"
+
+# define END 0
+# define FREE -1
+# define ADD 1
+# define PI 3.14159265359
+# define WIDTH 600
+# define HEIGHT 300
+# define BLOCK 64
+# define DEBUG 0
 
 typedef struct s_list
 {
@@ -26,9 +39,35 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
-# define END 0
-# define FREE -1
-# define ADD 1
+typedef struct s_player
+{
+	float x;
+	float y;
+	float angle;
+
+	bool rleft;
+	bool rright;
+
+	bool up;
+	bool down;
+	bool left;
+	bool right;
+}	t_player;
+
+typedef struct s_game
+{
+	void *mlx_ptr;
+	void *win_ptr;
+	void *img_ptr;
+
+	char *data;
+	int bpp;
+	int size_line;
+	int endian;
+	t_player player;
+
+	char **map;
+} t_game;
 
 // ft linkedlist
 t_list	*ft_lstnew(void *content);
@@ -56,4 +95,11 @@ char	*get_next_line(int fd);
 void	smart_ptr(void *ptr, int action);
 // error checking
 void	checking(int ac, char *av[]);
+// player
+void	move_player(t_player *player);
+int	key_down(int keycode, t_player *player);
+int	key_up(int keycode, t_player *player);
+void	init_player(t_player *player);
+// map
+char	**get_map(void);
 #endif
