@@ -51,9 +51,7 @@ run: $(NAME)
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) 
 
 norm :
-	norminette $(HELPER_DIR)/*.c
-	norminette *.c
-	norminette *.h
+	norminette $(HELPER_DIR)/*.c *.c *.h
 
 run :
 	./$(NAME) test.cub

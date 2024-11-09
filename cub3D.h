@@ -35,71 +35,67 @@
 
 typedef struct s_list
 {
-	void			*content;
-	struct s_list	*next;
+	void					*content;
+	struct s_list			*next;
 }	t_list;
 
 typedef struct s_player
 {
-	float x;
-	float y;
-	float angle;
-
-	bool rleft;
-	bool rright;
-
-	bool up;
-	bool down;
-	bool left;
-	bool right;
+	float	x;
+	float	y;
+	float	angle;
+	bool	rleft;
+	bool	rright;
+	bool	up;
+	bool	down;
+	bool	left;
+	bool	right;
 }	t_player;
 
 typedef struct s_game
 {
-	void *mlx_ptr;
-	void *win_ptr;
-	void *img_ptr;
-
-	char *data;
-	int bpp;
-	int size_line;
-	int endian;
-	t_player player;
-
-	char **map;
-} t_game;
+	void			*mlx_ptr;
+	void			*win_ptr;
+	void			*img_ptr;
+	char			*data;
+	int				bpp;
+	int				size_line;
+	int				endian;
+	t_player		player;
+	char			**map;
+}	t_game;
 
 // ft linkedlist
-t_list	*ft_lstnew(void *content);
-int		ft_lstsize(t_list *lst);
-t_list	*ft_lstlast(t_list *lst);
-void	ft_lstadd_front(t_list **lst, t_list *new);
-void	ft_lstadd_back(t_list **lst, t_list *new);
-void	ft_lstiter(t_list *lst, void (*f)(void *));
-void	ft_lstdelone(t_list *lst, void (*del)(void*));
-void	ft_lstclear(t_list **lst, void (*del)(void*));
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+t_list		*ft_lstnew(void *content);
+int			ft_lstsize(t_list *lst);
+t_list		*ft_lstlast(t_list *lst);
+void		ft_lstadd_front(t_list **lst, t_list *new);
+void		ft_lstadd_back(t_list **lst, t_list *new);
+void		ft_lstiter(t_list *lst, void (*f)(void *));
+void		ft_lstdelone(t_list *lst, void (*del)(void*));
+void		ft_lstclear(t_list **lst, void (*del)(void*));
+t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 // ft memory
-void	ft_bzero(void *b, size_t len);
-void	*ft_calloc(size_t number, size_t size);
+void		ft_bzero(void *b, size_t len);
+void		*ft_calloc(size_t number, size_t size);
 // ft str
-int		ft_isalnum(int a);
-int		ft_isalpha(int a);
-int		ft_isdigit(int a);
-void	ft_putstr_fd(char *s, int fd);
-char	**ft_split(char const *s, char c);
-size_t	ft_strlen(const char *str);
+int			ft_isalnum(int a);
+int			ft_isalpha(int a);
+int			ft_isdigit(int a);
+void		ft_putstr_fd(char *s, int fd);
+char		**ft_split(char const *s, char c);
+size_t		ft_strlen(const char *str);
 // gnl
-char	*get_next_line(int fd);
+char		*get_next_line(int fd);
 // clean up
-void	smart_ptr(void *ptr, int action);
+void		smart_ptr(void *ptr, int action);
 // error checking
-void	checking(int ac, char *av[]);
+void		checking(int ac, char *av[]);
 // player
-void	move_player(t_player *player);
-int	key_down(int keycode, t_player *player);
-int	key_up(int keycode, t_player *player);
-void	init_player(t_player *player);
+void		move_player(t_player *player);
+int			key_down(int keycode, t_player *player);
+int			key_up(int keycode, t_player *player);
+void		init_player(t_player *player);
 // map
-char	**get_map(void);
+char		**get_map(void);
 #endif
