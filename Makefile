@@ -17,8 +17,8 @@ NAME	    = cub3d
 
 AR			= ar rcs
 
-CC			= cc
-#CC			= cc -Wall -Wextra -Werror
+# CC			= cc
+CC			= cc -Wall -Wextra -Werror
   
 LIBFT_DIR	= ./libft
 LIBFT		= ${LIBFT_DIR}/libft.a
@@ -35,6 +35,7 @@ all: ${NAME}
 			${CC} -c -I ${INCLUDE}  $< -o ${<:.c=.o} 
 
 ${NAME}: ${OBJS} ${LIBFT}
+			$(MAKE) -C $(MINILIBX_DIR) all
 			cc -g -o ${NAME} ${OBJS} ${LIBFT} ${LIBMLX} ${LIBMLX_LINUX} $(LFLAGS)	
 
 ${LIBFT}:
@@ -47,6 +48,7 @@ clean:
 fclean: clean
 	make fclean -C ${LIBFT_DIR}
 	rm -f ${NAME}
+	$(MAKE) -C $(MINILIBX_DIR) clean
 
 re: fclean all
 
