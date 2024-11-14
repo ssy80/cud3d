@@ -1,57 +1,53 @@
-NAME = cub3D
-NAME_BONUS = cub3D_bonus
-CC = cc
-CFLAGS = -g -Wall -Wextra -Werror -I .
-MLXFLAGS = -Lminilibx-linux -lmlx_Linux -lX11 -lXext -lm
-HELPER_DIR = ./helper
-RM = rm -f
-HEADER = cub3D.h
-MLX = ./minilibx-linux
+DIR			= .
+SRC			= ${DIR}/cub3d.c \
+			  ${DIR}/event_handler.c \
+			  ${DIR}/image_helper.c \
+			  ${DIR}/draw_helper.c \
+			  ${DIR}/movement.c \
+			  ${DIR}/init.c \
+			  ${DIR}/player_helper.c \
+			  ${DIR}/ray_casting.c 
 
-SRC = cub3D.c
-OBJ = $(SRC:.c=.o)
-HELPER = $(wildcard $(HELPER_DIR)/*.c)
-HELPER_OBJ = $(HELPER:.c=.o)
-SRC_BONUS = cub3D_bonus.c
-OBJ_BONUS = $(SRC_BONUS:.c=.o)
 
-all : $(NAME)
+OBJS		= ${SRC:.c=.o}
 
-bonus : $(NAME_BONUS)
+INCLUDE		= ./header
 
-$(NAME_BONUS) : $(OBJ_BONUS) $(HELPER_OBJ)
-	$(CC) $(CFLAGS) $^ -o $@ $(MLXFLAGS)
+NAME	    = cub3d
 
-$(NAME) : $(HELPER_OBJ) $(OBJ)
-	$(MAKE) -C $(MLX) all
-	$(CC) $(CFLAGS) $^ -o $@ $(MLXFLAGS)
+AR			= ar rcs
 
-$(HELPER_DIR)/%.o : $(HELPER_DIR)/%.c $(HEADER)
-	$(CC) -c $(CFLAGS) $< -o $@ 
+CC			= cc
+#CC			= cc -Wall -Wextra -Werror
+  
+LIBFT_DIR	= ./libft
+LIBFT		= ${LIBFT_DIR}/libft.a
 
-clean :
-	$(RM) $(HELPER_OBJ) $(OBJ) $(OBJ_BONUS)
-	$(MAKE) -C $(MLX) clean
+MINILIBX_DIR = ./minilibx-linux
+LIBMLX 	= ${MINILIBX_DIR}/libmlx.a
+LIBMLX_LINUX = ${MINILIBX_DIR}/libmlx_Linux.a
 
-fclean : clean
-	$(RM) $(NAME) $(NAME_BONUS)
+LFLAGS      =  -Lminilibx-linux -Lmlx-Linux -lX11 -lXext -lm
 
-re : fclean all
+all: ${NAME}
 
-run : $(NAME)
-	./$(NAME)
+%.o: %.c
+			${CC} -c -I ${INCLUDE}  $< -o ${<:.c=.o} 
 
-debug : $(NAME)
-	gdb ./$(NAME) --tui
+${NAME}: ${OBJS} ${LIBFT}
+			cc -g -o ${NAME} ${OBJS} ${LIBFT} ${LIBMLX} ${LIBMLX_LINUX} $(LFLAGS)	
 
-nm : $(NAME)
-	nm -u ./$(NAME)
+${LIBFT}:
+		make bonus -C ${LIBFT_DIR}
 
-run: $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) 
+clean:
+	make clean -C ${LIBFT_DIR}
+	rm -f ${OBJS}
 
-norm :
-	norminette $(HELPER_DIR)/*.c *.c *.h
+fclean: clean
+	make fclean -C ${LIBFT_DIR}
+	rm -f ${NAME}
 
-run :
-	./$(NAME) test.cub
+re: fclean all
+
+.PHONY: all clean fclean re
