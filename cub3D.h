@@ -32,6 +32,13 @@
 # define HEIGHT 300
 # define BLOCK 64
 # define DEBUG 0
+# define NTH 0
+# define STH 1
+# define EST 2
+# define WST 3
+# define FLOOR 4
+# define CEIL 5
+
 
 typedef struct s_list
 {
