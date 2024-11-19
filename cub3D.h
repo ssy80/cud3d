@@ -70,6 +70,16 @@ typedef struct s_game
 	int				endian;
 	t_player		player;
 	char			**map;
+	char			*N;
+	char			*S;
+	char			*E;
+	char			*W;
+	int				FR;
+	int				FG;
+	int				FB;
+	int				CR;
+	int				CG;
+	int				CB;
 }	t_game;
 
 // ft linkedlist
@@ -85,19 +95,23 @@ t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 // ft memory
 void		ft_bzero(void *b, size_t len);
 void		*ft_calloc(size_t number, size_t size);
+void		*ft_memcpy(void *dest, const void *src, size_t n);
 // ft str
 int			ft_isalnum(int a);
 int			ft_isalpha(int a);
 int			ft_isdigit(int a);
 void		ft_putstr_fd(char *s, int fd);
 char		**ft_split(char const *s, char c);
-size_t		ft_strlen(const char *str);
+size_t	ft_strlen(const char *str);
+char		*ft_strtrim(char const *s1, char const *set);
 // gnl
 char		*get_next_line(int fd);
 // clean up
 void		smart_ptr(void *ptr, int action);
 // error checking
 void		checking(int ac, char *av[]);
+void		freesplit(char **s);
+int			identify(char *type);
 // player
 void		move_player(t_player *player);
 int			key_down(int keycode, t_player *player);
@@ -105,4 +119,5 @@ int			key_up(int keycode, t_player *player);
 void		init_player(t_player *player);
 // map
 char		**get_map(void);
+char		**openfile(const char *dir);
 #endif

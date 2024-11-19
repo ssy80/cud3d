@@ -172,16 +172,64 @@ int	draw_loop(t_game *game)
 	return (0);
 }
 
+int	char2dlen(char **s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+void loadpath(t_game *game, char **tmp)
+{
+	game->N = tmp[NTH];
+	game->S = tmp[STH];
+	game->E= tmp[EST];
+	game->W = tmp[WST];
+
+}
+
+void loadvar(char *av[], t_game *game)
+{
+	char	**ss;
+	int		i;
+	char	*tmp[6];
+	char	**paths;
+
+	ft_bzero(tmp, sizeof(char*) * 6);
+	ss = openfile(av[1]);
+	if (!ss)
+		return (ft_putstr_fd("Error\n", STDOUT_FILENO), exit(1));
+	i = -1;
+	while (++i < 6)
+	{
+		paths = ft_split(ss[i], ' ');
+		if (!paths)
+			return (ft_putstr_fd("Error\n", 1), freesplit(ss), exit(1));
+		if (char2dlen(paths) != 2)
+			return (ft_putstr_fd("Error\n", 1), freesplit(paths), freesplit(ss), exit(1));
+		tmp[identify(ss[i])] = ft_calloc(ft_strlen(paths[1]) + 1, sizeof(char));
+		if (!tmp[identify(ss[i])])
+			return (ft_putstr_fd("Error\n", 1), freesplit(paths), freesplit(ss), exit(1));
+		ft_memcpy(tmp[identify(ss[i])], paths[1], ft_strlen(paths[1]));
+		freesplit(paths);
+	}
+	return (freesplit(ss), loadpath(game, tmp));
+}
+
 int	main(int ac, char *av[])
 {
 	t_game	game;
 
 	checking(ac, av);
-	init_game(&game);
-	mlx_hook(game.win_ptr, 2, 1L << 0, key_down, &game.player);
-	mlx_hook(game.win_ptr, 3, 1L << 1, key_up, &game.player);
-	draw_square(&game, WIDTH / 2, HEIGHT / 2, 10, 0x00FF00);
-	mlx_loop_hook(game.mlx_ptr, draw_loop, &game);
-	mlx_loop(game.mlx_ptr);
+	loadvar(av, &game);
+	// init_game(&game);
+	// mlx_hook(game.win_ptr, 2, 1L << 0, key_down, &game.player);
+	// mlx_hook(game.win_ptr, 3, 1L << 1, key_up, &game.player);
+	// draw_square(&game, WIDTH / 2, HEIGHT / 2, 10, 0x00FF00);
+	// mlx_loop_hook(game.mlx_ptr, draw_loop, &game);
+	// mlx_loop(game.mlx_ptr);
 	return (0);
 }
