@@ -27,31 +27,6 @@ void freesplit(char **s)
 	s = NULL;
 }
 
-char	**ll_to_2darr(t_list *head)
-{
-	char	**arr;
-	int		i;
-	int		size;
-	t_list	*np;
-
-	i = -1;
-	np = head;
-	size = ft_lstsize(head);
-	arr = malloc((size + 1) * sizeof(char *));
-	if (!arr)
-		return (NULL);
-	arr[size] = 0;
-	while (head)
-	{
-		arr[++i] = head->content;
-		np = head->next;
-		free(head);
-		head = NULL;
-		head = np;
-	}
-	return (arr);
-}
-
 int	identify(char *type)
 {
 	int	len;
@@ -86,46 +61,11 @@ bool	processline(char *s)
 	while (split[i])
 		i++;
 	if (i != 2)
-		return (ft_putstr_fd("Error: ", 1), ft_putstr_fd(s, 1), freesplit(s), false);
-	if (identify(s[0]) >= 0)
-		return (freesplit(s), true);
-	return (freesplit(s), false);
+		return (ft_putstr_fd("Error: ", 1), ft_putstr_fd(s, 1), freesplit(split), false);
+	if (identify(split[0]) >= 0)
+		return (freesplit(split), true);
+	return (freesplit(split), false);
 }
-
-static void	closefile(int fd)
-{
-	close(fd);
-	return ;
-}
-
-char	**openfile(const char *dir)
-{
-	int		fd;
-	char	*ans;
-	t_list	*head;
-	t_list	*cp;
-	char	**arr;
-
-	head = NULL;
-	fd = open(dir, O_RDWR);
-	ans = get_next_line(fd);
-	if (!ans)
-		return (closefile(fd), NULL);
-	while (ans)
-	{
-		cp = ft_lstnew(ans);
-		if (!cp)
-			return (ft_lstclear(&head, free), free(ans), closefile(fd), NULL);
-		ft_lstadd_back(&head, cp);
-		ans = get_next_line(fd);
-	}
-	arr = ll_to_2darr(head);
-	if (!arr)
-		return (ft_lstclear(&head, free), closefile(fd), NULL);
-	return (closefile(fd), arr);
-}
-
-
 
 
 // check for 2 args
@@ -146,7 +86,20 @@ void	checking(int ac, char *av[], t_game *game)
 	content = openfile(av[1]);
 	if (!content)
 		return (ft_putstr_fd("Error\n", STDOUT_FILENO), exit(1));
+<<<<<<< HEAD:err/err_manage.c
 	loadvar(content, game);
 	loadmap(content, game);
 	ft_lstclear(&content, free);
 }
+=======
+	l = -1;
+	while (content[++l] && l < 6)
+		if (identify(content[l]) != -1)
+			id[identify(content[l])] = true;
+	l = -1;
+	while (++l < 6)
+		if (!id[l])
+			return (ft_putstr_fd("Error in identifier\n", STDOUT_FILENO), exit(1));
+	freesplit(content);
+}
+>>>>>>> 1e3b38f (loading n,s,e,w into game data):helper/err_manage.c
