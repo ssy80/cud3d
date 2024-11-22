@@ -74,12 +74,8 @@ typedef struct s_game
 	char			*S;
 	char			*E;
 	char			*W;
-	int				FR;
-	int				FG;
-	int				FB;
-	int				CR;
-	int				CG;
-	int				CB;
+	int				F[3];
+	int				C[3];
 }	t_game;
 
 // ft linkedlist

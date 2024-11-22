@@ -182,13 +182,58 @@ int	char2dlen(char **s)
 	return (i);
 }
 
+int parseint(char *s, int *i, int n)
+{
+	if (s[*i] && ft_isdigit(s[*i]))
+		return ((*i)++, parseint(s, i, n * 10 + (s[*i - 1] - '0')));
+	if (n > 255)
+		return (-1);
+	return (n);
+}
+
+void	freetmparr(char **tmp)
+{
+	int	i;
+
+	i = -1;
+	while (++i < 6)
+		free(tmp[i]);
+}
+
+void loadfc(t_game *game, char **tmp, int fc)
+{
+	int		i;
+	int		j;
+	int		comma;
+	char	*s;
+
+	i = -1;
+	j = -1;
+	comma = 0;
+	s = tmp[fc];
+	while (s[++i])
+	{
+		if (s[i] == ' ' || s[i] == '\t' || s[i] == '\r')
+			continue;
+		if (ft_isdigit(s[i]) && j <2 && fc == FLOOR)
+			game->F[++j] = parseint(s, &i, 0);
+		if (ft_isdigit(s[i]) && j <2 && fc == CEIL)
+			game->C[++j] = parseint(s, &i, 0);
+		if (s[i] == ',' && ++comma >= 0)
+			continue;
+	}
+	if (comma != 2)
+		ft_putstr_fd("error in identifier", 1), freetmparr(tmp), exit(1);
+}
+
 void loadpath(t_game *game, char **tmp)
 {
 	game->N = tmp[NTH];
 	game->S = tmp[STH];
 	game->E= tmp[EST];
 	game->W = tmp[WST];
-
+	loadfc(game, tmp, FLOOR);
+	loadfc(game, tmp, CEIL);
 }
 
 void loadvar(char *av[], t_game *game)
@@ -210,7 +255,7 @@ void loadvar(char *av[], t_game *game)
 			return (ft_putstr_fd("Error\n", 1), freesplit(ss), exit(1));
 		if (char2dlen(paths) != 2)
 			return (ft_putstr_fd("Error\n", 1), freesplit(paths), freesplit(ss), exit(1));
-		tmp[identify(ss[i])] = ft_calloc(ft_strlen(paths[1]) + 1, sizeof(char));
+		tmp[identify(ss[i])] = ft_calloc(ft_strlen(paths[1]) + 2, sizeof(char));
 		if (!tmp[identify(ss[i])])
 			return (ft_putstr_fd("Error\n", 1), freesplit(paths), freesplit(ss), exit(1));
 		ft_memcpy(tmp[identify(ss[i])], paths[1], ft_strlen(paths[1]));
