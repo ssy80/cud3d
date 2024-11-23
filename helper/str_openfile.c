@@ -46,7 +46,7 @@ static char	**ll_to_2darr(t_list *head)
 
 bool	isemptystr(char *s)
 {
-	char *res;
+	char	*res;
 
 	if (!s)
 		return (true);
@@ -70,15 +70,18 @@ char	**openfile(const char *dir)
 
 	head = NULL;
 	fd = open(dir, O_RDWR);
-	while ((ans = get_next_line(fd)))
+	ans = get_next_line(fd);
+	while (ans)
 	{
-		if (isemptystr(ans))
-			continue;
-		cp = ft_lstnew(ans);
-		if (!cp)
-			return (ft_lstclear(&head, free), free(ans), closefile(fd), \
-			smart_ptr(NULL, END), NULL);
-		ft_lstadd_back(&head, cp);
+		if (!isemptystr(ans))
+		{
+			cp = ft_lstnew(ans);
+			if (!cp)
+				return (ft_lstclear(&head, free), free(ans), closefile(fd), \
+				smart_ptr(NULL, END), NULL);
+			ft_lstadd_back(&head, cp);
+		}
+		ans = get_next_line(fd);
 	}
 	arr = ll_to_2darr(head);
 	if (!arr)

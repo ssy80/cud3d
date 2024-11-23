@@ -46,7 +46,8 @@ void	init_game(t_game *game)
 	game->mlx_ptr = mlx_init();
 	game->win_ptr = mlx_new_window(game->mlx_ptr, WIDTH, HEIGHT, "Cub3D");
 	game->img_ptr = mlx_new_image(game->mlx_ptr, WIDTH, HEIGHT);
-	game->data = mlx_get_data_addr(game->img_ptr, &game->bpp, &game->size_line, &game->endian);
+	game->data = mlx_get_data_addr(game->img_ptr, &game->bpp, \
+	&game->size_line, &game->endian);
 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->img_ptr, 0, 0);
 }
 
@@ -216,22 +217,53 @@ void loadfc(t_game *game, char **tmp, int fc)
 		if (s[i] == ' ' || s[i] == '\t' || s[i] == '\r')
 			continue;
 		if (ft_isdigit(s[i]) && j <2 && fc == FLOOR)
-			game->F[++j] = parseint(s, &i, 0);
+			game->f[++j] = parseint(s, &i, 0);
 		if (ft_isdigit(s[i]) && j <2 && fc == CEIL)
-			game->C[++j] = parseint(s, &i, 0);
+			game->c[++j] = parseint(s, &i, 0);
 		if (s[i] == ',' && ++comma >= 0)
 			continue;
 	}
-	if (comma != 2)
-		ft_putstr_fd("error in identifier", 1), freetmparr(tmp), exit(1);
+}
+
+bool	checkcolor(char **tmp, int id, int c)
+{
+	int	i;
+	int	j;
+	int	n;
+
+	i = 0;
+	while (tmp[id][i])
+	{
+		j = 0;
+		n = 0;
+		while (tmp[id][j + i] && tmp[id][j + i] != ',')
+			if (ft_isdigit(tmp[id][i + j++]))
+				n++;
+		if (n <= 0 || n > 3)
+			return (false);
+		if (tmp[id][i + j] == ',')
+			c++;
+		if (j > 0)
+			i += j + 1;
+		else
+			i++;
+	}
+	if (c != 2 || tmp[id][i-1] == ',' || tmp[id][i-1] == ' ')
+		return (false);
+	return (true);
 }
 
 void loadpath(t_game *game, char **tmp)
 {
-	game->N = tmp[NTH];
-	game->S = tmp[STH];
-	game->E= tmp[EST];
-	game->W = tmp[WST];
+	game->n = tmp[NTH];
+	game->s = tmp[STH];
+	game->e = tmp[EST];
+	game->w = tmp[WST];
+	ft_bzero(game->f, sizeof(int) * 3);
+	ft_bzero(game->c, sizeof(int) * 3);
+	if (!checkcolor(tmp, FLOOR, 0) || !checkcolor(tmp, CEIL, 0))
+		return (ft_putstr_fd("Error in color\n", 1), freetmparr(tmp), \
+		smart_ptr(NULL, FREE) ,exit(1));
 	loadfc(game, tmp, FLOOR);
 	loadfc(game, tmp, CEIL);
 }
@@ -246,18 +278,18 @@ void loadvar(char *av[], t_game *game)
 	ft_bzero(tmp, sizeof(char*) * 6);
 	ss = openfile(av[1]);
 	if (!ss)
-		return (ft_putstr_fd("Error\n", STDOUT_FILENO), exit(1));
+		return (ft_putstr_fd("Error FileProb\n", STDOUT_FILENO), exit(1));
 	i = -1;
 	while (++i < 6)
 	{
 		paths = ft_split(ss[i], ' ');
 		if (!paths)
-			return (ft_putstr_fd("Error\n", 1), freesplit(ss), exit(1));
+			return (ft_putstr_fd("Error MallocErr\n", 1), freesplit(ss), exit(1));
 		if (char2dlen(paths) != 2)
-			return (ft_putstr_fd("Error\n", 1), freesplit(paths), freesplit(ss), exit(1));
+			return (ft_putstr_fd("Error BlankProb\n", 1), freesplit(paths), freesplit(ss), exit(1));
 		tmp[identify(ss[i])] = ft_calloc(ft_strlen(paths[1]) + 2, sizeof(char));
 		if (!tmp[identify(ss[i])])
-			return (ft_putstr_fd("Error\n", 1), freesplit(paths), freesplit(ss), exit(1));
+			return (ft_putstr_fd("Error 292\n", 1), freesplit(paths), freesplit(ss), exit(1));
 		ft_memcpy(tmp[identify(ss[i])], paths[1], ft_strlen(paths[1]));
 		freesplit(paths);
 	}

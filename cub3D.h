@@ -39,7 +39,6 @@
 # define FLOOR 4
 # define CEIL 5
 
-
 typedef struct s_list
 {
 	void					*content;
@@ -70,12 +69,12 @@ typedef struct s_game
 	int				endian;
 	t_player		player;
 	char			**map;
-	char			*N;
-	char			*S;
-	char			*E;
-	char			*W;
-	int				F[3];
-	int				C[3];
+	char			*n;
+	char			*s;
+	char			*e;
+	char			*w;
+	int				f[3];
+	int				c[3];
 }	t_game;
 
 // ft linkedlist
@@ -98,7 +97,7 @@ int			ft_isalpha(int a);
 int			ft_isdigit(int a);
 void		ft_putstr_fd(char *s, int fd);
 char		**ft_split(char const *s, char c);
-size_t	ft_strlen(const char *str);
+size_t		ft_strlen(const char *str);
 char		*ft_strtrim(char const *s1, char const *set);
 // gnl
 char		*get_next_line(int fd);

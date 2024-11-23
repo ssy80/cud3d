@@ -55,3 +55,6 @@ norm :
 
 run :
 	./$(NAME) test.cub
+
+test:
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) test.cub
