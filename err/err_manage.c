@@ -13,7 +13,7 @@
 #include "../header/cub3d.h"
 #include "../header/libft.h"
 
-void freesplit(char **s)
+void	freesplit(char **s)
 {
 	int	i;
 
@@ -36,7 +36,8 @@ int	identify(char *type)
 		return (FLOOR);
 	if (len >= 2 && type[0] == 'C' && type[1] == ' ')
 		return (CEIL);
-	if (len >= 3 && type[2] == ' '){
+	if (len >= 3 && type[2] == ' ')
+	{
 		if (type[0] == 'N' && type[1] == 'O')
 			return (NTH);
 		if (type[0] == 'S' && type[1] == 'O')
@@ -56,17 +57,17 @@ bool	processline(char *s)
 
 	split = ft_split(s, ' ');
 	if (!split)
-		ft_putstr_fd("ft_split error", 1), exit(1);
+		return (ft_putstr_fd("ft_split error", 1), exit(1), 0);
 	i = 0;
 	while (split[i])
 		i++;
 	if (i != 2)
-		return (ft_putstr_fd("Error: ", 1), ft_putstr_fd(s, 1), freesplit(split), false);
+		return (ft_putstr_fd("Error: ", 1), ft_putstr_fd(s, 1), \
+		freesplit(split), false);
 	if (identify(split[0]) >= 0)
 		return (freesplit(split), true);
 	return (freesplit(split), false);
 }
-
 
 // check for 2 args
 // check 2nd arg with len of 5 or more and ending with .cub
@@ -99,7 +100,10 @@ void	checking(int ac, char *av[], t_game *game)
 	l = -1;
 	while (++l < 6)
 		if (!id[l])
-			return (ft_putstr_fd("Error in identifier\n", STDOUT_FILENO), exit(1));
+			return (ft_putstr_fd("Error in identifier\n", 1), exit(1));
 	freesplit(content);
 }
+<<<<<<< HEAD:err/err_manage.c
 >>>>>>> 1e3b38f (loading n,s,e,w into game data):helper/err_manage.c
+=======
+>>>>>>> 8f7a0dd (some norm check and fixing color parsing):helper/err_manage.c

@@ -81,3 +81,9 @@ t2: ${NAME}
 # testing all bad map
 t0: ${NAME}
 	for map in maps/bad/*; do echo -n "$$map" ": ";./cub3d "$$map";  done
+
+run :
+	./$(NAME) test.cub
+
+test:
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) test.cub
