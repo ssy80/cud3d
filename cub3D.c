@@ -131,7 +131,6 @@ void	draw_line(t_player *player, t_game *game, float start_x, int i)
 	}
 }
 
-
 void	draw_map(t_game *game)
 {
 	char	**map;
@@ -294,12 +293,9 @@ bool checkmap(t_game *game)
 	i = -1;
 	j = 0;
 	while (++i < 128)
-	{
-		if (i == ' ' || i == '1' || i == '0' || i == 'N' \
-		|| i == 'S' || i == 'E' || i == 'W' || i == '\n')
-			continue;
-		j += in[i];
-	}
+		if (i != ' ' && i != '1' && i != '0' && i != 'N' \
+		&& i != 'S' && i != 'E' && i != 'W' && i != '\n')
+			j += in[i];
 	if (j > 0)
 		return (false);
 	return (true);
@@ -313,6 +309,73 @@ void freegamemap(t_game *game)
 	while (game->map[++i])
 		free(game->map[i]);
 	free(game->map);
+}
+
+void	findstartpos(t_game *game, int *coor)
+{
+	int	r;
+	int c;
+
+	r = -1;
+	coor[0] = -1;
+	coor[1] = -1;
+	while (game->map[++r])
+	{
+		c = -1;
+		while (game->map[r][++c])
+		{
+			if (game->map[r][c] == 'N' || game->map[r][c] == 'S' || \
+			game->map[r][c] == 'E' || game->map[r][c] == 'W')
+			{
+				coor[0] = r;
+				coor[1] = c;
+				break;
+			}
+		}
+	}
+}
+
+void dir(int *direct, int *pos, int r, int c)
+{
+	ft_bzero(direct, sizeof(int) * 2);
+	direct[0] = pos[0] + r;
+	direct[1] = pos[1] + c;
+}
+
+bool dfs(t_game *game, bool visit[2000][2000], int *pos, int *len)
+{
+	int	u[2];
+	int	d[2];
+	int	l[2];
+	int	r[2];
+	
+	if (pos[0] < 0 || pos[1] < 0 || pos[0] >= len[0] \
+	|| pos[1] >= len[1] || visit[pos[0]][pos[1]])
+		return (false);
+	if (game->map[pos[0]][pos[1]] == ' ')
+		return (true);
+	visit[pos[0]][pos[1]] = true;
+	dir(u, pos, -1, 0);
+	dir(d, pos, 1, 0);
+	dir(l, pos, 0, -1);
+	dir(r, pos, 0, 1);
+	return (dfs(game, visit, u, len) || dfs(game, visit, d, len) \
+	||dfs(game, visit, l, len) ||dfs(game, visit, r, len));
+}
+
+bool validmap(t_game *game, int lr, int lc)
+{
+	bool visit[2000][2000];
+	int pos[2];
+	int len[2];
+
+	len[0] = lr;
+	len[1] = lc;
+	ft_bzero(visit, sizeof(bool) * 2000 * 2000);
+	if (lr > 2000 || lc > 2000)
+		return (ft_putstr_fd("map too big\n", 1) ,false);
+	findstartpos(game, pos);
+	return (!dfs(game, visit, pos, len));
 }
 
 bool	loadmap(t_game *game, char **ss)
@@ -331,7 +394,7 @@ bool	loadmap(t_game *game, char **ss)
 		game->map[i] = ft_calloc(j + 1, sizeof(char));
 		ft_memcpy(game->map[i], ss[i], ft_strlen(ss[i]));
 	}
-	if (!checkmap(game))
+	if (!checkmap(game) || !validmap(game, i, j))
 		return (false);
 	return (true);
 }
