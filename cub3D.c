@@ -268,7 +268,87 @@ void loadpath(t_game *game, char **tmp)
 	loadfc(game, tmp, CEIL);
 }
 
-void loadvar(char *av[], t_game *game)
+int	max(int a, int b)
+{
+	if (a >= b)
+		return (a);
+	return (b);
+}
+
+bool checkmap(t_game *game)
+{
+	int	i;
+	int	j;
+	int	in[128];
+
+	i = -1;
+	ft_bzero(in, sizeof(int) * 128);
+	while (game->map[++i])
+	{
+		j = -1;
+		while (game->map[i][++j])
+			in[(int) game->map[i][j]]++;
+	}
+	if (in['N'] + in['S'] + in['E'] + in['W'] != 1)
+		return (false);
+	i = -1;
+	j = 0;
+	while (++i < 128)
+	{
+		if (i == ' ' || i == '1' || i == '0' || i == 'N' \
+		|| i == 'S' || i == 'E' || i == 'W' || i == '\n')
+			continue;
+		j += in[i];
+	}
+	if (j > 0)
+		return (false);
+	return (true);
+}
+
+void freegamemap(t_game *game)
+{
+	int	i;
+
+	i = -1;
+	while (game->map[++i])
+		free(game->map[i]);
+	free(game->map);
+}
+
+bool	loadmap(t_game *game, char **ss)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	j = 0;
+	while (ss[++i])
+		j = max(ft_strlen(ss[i]), j);
+	game->map = ft_calloc(i + 1, sizeof(char *));
+	i = -1;
+	while (ss[++i])
+	{
+		game->map[i] = ft_calloc(j + 1, sizeof(char));
+		ft_memcpy(game->map[i], ss[i], ft_strlen(ss[i]));
+	}
+	if (!checkmap(game))
+		return (false);
+	return (true);
+}
+
+void	loadcheckmap(t_game *game, char	**ss, char **tmp)
+{
+	if (loadmap(game, ss + 6))
+		return ;
+	freesplit(ss);
+	freegamemap(game);
+	freetmparr(tmp);
+	ft_putstr_fd("Error in map\n", 1);
+	smart_ptr(NULL, FREE);
+	exit(1);
+}
+
+void	loadvar(char *av[], t_game *game)
 {
 	char	**ss;
 	int		i;
@@ -289,11 +369,12 @@ void loadvar(char *av[], t_game *game)
 			return (ft_putstr_fd("Error BlankProb\n", 1), freesplit(paths), freesplit(ss), exit(1));
 		tmp[identify(ss[i])] = ft_calloc(ft_strlen(paths[1]) + 2, sizeof(char));
 		if (!tmp[identify(ss[i])])
-			return (ft_putstr_fd("Error 292\n", 1), freesplit(paths), freesplit(ss), exit(1));
+			return (ft_putstr_fd("Error 317\n", 1), freesplit(paths), freesplit(ss), exit(1));
 		ft_memcpy(tmp[identify(ss[i])], paths[1], ft_strlen(paths[1]));
 		freesplit(paths);
 	}
-	return (freesplit(ss), loadpath(game, tmp));
+	return (loadcheckmap(game, ss, tmp), freesplit(ss), loadpath(game, tmp));
+	// return (loadmap(game, ss + 6), freesplit(ss), loadpath(game, tmp));
 }
 
 int	main(int ac, char *av[])
