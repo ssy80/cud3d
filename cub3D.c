@@ -141,7 +141,8 @@ void	draw_map(t_game *game)
 	map = game->map;
 	color = 0x0000FF;
 	y = -1;
-	while (map[++y]){
+	while (map[++y])
+	{
 		x = -1;
 		while (map[y][++x])
 			if (map[y][x] == '1')
@@ -214,7 +215,7 @@ void loadfc(t_game *game, char **tmp, int fc)
 	while (s[++i])
 	{
 		if (s[i] == ' ' || s[i] == '\t' || s[i] == '\r')
-			continue;
+			continue ;
 		if (ft_isdigit(s[i]) && j <2 && fc == FLOOR)
 			game->f[++j] = parseint(s, &i, 0);
 		if (ft_isdigit(s[i]) && j <2 && fc == CEIL)
@@ -262,7 +263,7 @@ void loadpath(t_game *game, char **tmp)
 	ft_bzero(game->c, sizeof(int) * 3);
 	if (!checkcolor(tmp, FLOOR, 0) || !checkcolor(tmp, CEIL, 0))
 		return (ft_putstr_fd("Error in color\n", 1), freetmparr(tmp), \
-		smart_ptr(NULL, FREE) ,exit(1));
+		smart_ptr(NULL, FREE), exit(1));
 	loadfc(game, tmp, FLOOR);
 	loadfc(game, tmp, CEIL);
 }
@@ -342,40 +343,28 @@ void dir(int *direct, int *pos, int r, int c)
 	direct[1] = pos[1] + c;
 }
 
-bool dfs(t_game *game, bool visit[2000][2000], int *pos, int *len)
+bool	dfs(t_game *game, bool visit[2000][2000], int r, int c)
 {
-	int	u[2];
-	int	d[2];
-	int	l[2];
-	int	r[2];
-	
-	if (pos[0] < 0 || pos[1] < 0 || pos[0] >= len[0] \
-	|| pos[1] >= len[1] || visit[pos[0]][pos[1]])
+	if (visit[r][c] || game->map[r][c] == '1')
 		return (false);
-	if (game->map[pos[0]][pos[1]] == ' ')
+	if (r < 0 || c < 0 || r >= game->row \
+	|| c >= game->col || game->map[r][c] == ' ')
 		return (true);
-	visit[pos[0]][pos[1]] = true;
-	dir(u, pos, -1, 0);
-	dir(d, pos, 1, 0);
-	dir(l, pos, 0, -1);
-	dir(r, pos, 0, 1);
-	return (dfs(game, visit, u, len) || dfs(game, visit, d, len) \
-	||dfs(game, visit, l, len) ||dfs(game, visit, r, len));
+	visit[r][c] = true;
+	return (dfs(game, visit, r + 1, c) || dfs(game, visit, r - 1, c) \
+	|| dfs(game, visit, r, c + 1) || dfs(game, visit, r, c - 1));
 }
 
-bool validmap(t_game *game, int lr, int lc)
+bool	validmap(t_game *game, int lr, int lc)
 {
 	bool visit[2000][2000];
 	int pos[2];
-	int len[2];
 
-	len[0] = lr;
-	len[1] = lc;
 	ft_bzero(visit, sizeof(bool) * 2000 * 2000);
 	if (lr > 2000 || lc > 2000)
 		return (ft_putstr_fd("map too big\n", 1) ,false);
 	findstartpos(game, pos);
-	return (!dfs(game, visit, pos, len));
+	return (!dfs(game, visit, pos[0], pos[1]));
 }
 
 bool	loadmap(t_game *game, char **ss)
@@ -394,6 +383,8 @@ bool	loadmap(t_game *game, char **ss)
 		game->map[i] = ft_calloc(j + 1, sizeof(char));
 		ft_memcpy(game->map[i], ss[i], ft_strlen(ss[i]));
 	}
+	game->row = i;
+	game->col = j;
 	if (!checkmap(game) || !validmap(game, i, j))
 		return (false);
 	return (true);
