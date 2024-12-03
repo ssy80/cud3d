@@ -64,14 +64,10 @@ void load_player(t_data *data)
     }
 }
 
-void load_wall_texture(t_data *data)
+void load_wall_texture(t_data *data, t_game *game)
 {
-    char *no_path = "./pics/redbrick.xpm"; 
-    char *so_path = "./pics/eagle.xpm"; 
-    char *we_path = "./pics/bluestone.xpm"; 
-    char *ea_path = "./pics/wood.xpm"; 
-    data->no = load_texture(data->mlx, no_path);
-    data->so = load_texture(data->mlx, so_path);
-    data->we = load_texture(data->mlx, we_path);
-    data->ea = load_texture(data->mlx, ea_path);
+    data->no = load_texture(data->mlx, game->n);
+    data->so = load_texture(data->mlx, game->s);
+    data->we = load_texture(data->mlx, game->w);
+    data->ea = load_texture(data->mlx, game->e);
 }

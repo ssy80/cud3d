@@ -1,19 +1,19 @@
-NO ./path_to_the_north_texture
-SO ./path_to_the_south_texture
-WE ./path_to_the_west_texture
+NO ./pics/redbrick.xpm
+SO ./pics/eagle.xpm
+WE ./pics/bluestone.xpm
 
-EA ./path_to_the_east_texture
+EA ./pics/wood.xpm
 F 210,52,0
 
 C 225,0,0
 
           111111111111111
-1111111111100000000000001
+1111111111100000000E00001
 1000000000000011111111111
 100000100000001
 100000000000001
 100000010000001
 100001000000001
-1000000000E0001
+100000000000001
 100000000000001
 111111111111111

@@ -13,6 +13,30 @@
 #include "../header/cub3d.h"
 #include "../header/libft.h"
 
+static void	delnextline(char *str)
+{
+	int	l;
+
+	if (!str)
+		return ;
+	l = ft_strlen(str);
+	if (str[l - 1] == '\n')
+		str[l - 1] = '\0';
+}
+
+void	gamevar(t_game *game)
+{
+	int	i;
+
+	i = -1;
+	delnextline(game->n);
+	delnextline(game->s);
+	delnextline(game->w);
+	delnextline(game->e);
+	while (++i < game->row)
+		delnextline(game->map[i]);
+}
+
 bool	loadmap(t_game *game, char **ss)
 {
 	int	i;

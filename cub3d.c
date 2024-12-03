@@ -46,13 +46,14 @@ int main(int ac, char **av)
 
     checking(ac, av);
 	loadvar(av, &game);
+	gamevar(&game);
     ft_bzero(&data, sizeof(t_data));
-    data.my_map = get_map();
+    data.my_map = game.map;
     load_player(&data);
     init(&data);
-    load_wall_texture(&data);
+    load_wall_texture(&data, &game);
 	//render(&data);
-	// init_event_hooks(&data);
-    // mlx_loop_hook(data.mlx, render, &data);
-	// mlx_loop(data.mlx);
+	init_event_hooks(&data);
+    mlx_loop_hook(data.mlx, render, &data);
+	mlx_loop(data.mlx);
 }

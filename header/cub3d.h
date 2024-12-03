@@ -187,7 +187,7 @@ void move_right(t_data *data);
 int check_point_in_wall(int x, int y, t_data *data);
 
 //init.c
-void load_wall_texture(t_data *data);
+void load_wall_texture(t_data *data, t_game *game);
 char **get_map();
 void load_player(t_data *data);
 
@@ -231,6 +231,7 @@ int		parseint(char *s, int *i, int n);
 void	loadfc(t_game *game, char **tmp, int fc);
 void	loadpath(t_game *game, char **tmp);
 void	loadvar(char *av[], t_game *game);
+void	gamevar(t_game *game);
 // gnl
 char	*get_next_line(int fd);
 
