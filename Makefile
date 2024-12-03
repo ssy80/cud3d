@@ -1,13 +1,27 @@
 DIR			= .
+DIR_ERR = ./err
+DIR_HELPER = ./helper
+DIR_LOAD = ./load
+DIR_GNL = ./gnl
 SRC			= ${DIR}/cub3d.c \
-			  ${DIR}/event_handler.c \
-			  ${DIR}/image_helper.c \
-			  ${DIR}/draw_helper.c \
-			  ${DIR}/movement.c \
-			  ${DIR}/init.c \
-			  ${DIR}/player_helper.c \
-			  ${DIR}/ray_casting.c 
-
+					${DIR}/event_handler.c \
+					${DIR}/image_helper.c \
+					${DIR}/draw_helper.c \
+					${DIR}/movement.c \
+					${DIR}/init.c \
+					${DIR}/player_helper.c \
+					${DIR}/ray_casting.c \
+					${DIR_GNL}/get_next_line.c \
+					${DIR_GNL}/get_next_line_utils.c \
+					${DIR_ERR}/err_manage.c\
+					${DIR_ERR}/err_mapcheck.c\
+					${DIR_ERR}/err_smartptr.c\
+					${DIR_LOAD}/loadmap.c\
+					${DIR_LOAD}/loadvar.c\
+					${DIR_HELPER}/char2dlen.c\
+					${DIR_HELPER}/freefunc.c\
+					${DIR_HELPER}/max.c\
+					${DIR_HELPER}/openfile.c
 
 OBJS		= ${SRC:.c=.o}
 

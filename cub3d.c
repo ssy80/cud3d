@@ -39,17 +39,20 @@ int	render(t_data *data)
 }
 
 
-int main()
+int main(int ac, char **av)
 {
     t_data data;
+    t_game  game;
 
+    checking(ac, av);
+	loadvar(av, &game);
     ft_bzero(&data, sizeof(t_data));
     data.my_map = get_map();
     load_player(&data);
     init(&data);
     load_wall_texture(&data);
 	//render(&data);
-	init_event_hooks(&data);
-    mlx_loop_hook(data.mlx, render, &data);
-	mlx_loop(data.mlx);
+	// init_event_hooks(&data);
+    // mlx_loop_hook(data.mlx, render, &data);
+	// mlx_loop(data.mlx);
 }

@@ -11,14 +11,18 @@
 /* ************************************************************************** */
 #ifndef FT_CUB3D_H
 # define FT_CUB3D_H
-# include <unistd.h>
 # include <stdio.h>
-# include "../minilibx-linux/mlx.h"
-# include "cub3d.h"
-# include <X11/keysym.h>
-# include <X11/X.h>
-# include "libft.h"
+# include <stdlib.h>
+# include <unistd.h>
+# include <string.h>
+# include <stdbool.h>
 # include <math.h>
+# include <fcntl.h>
+# include <X11/X.h>
+# include <X11/keysym.h>
+# include "libft.h"
+# include "cub3d.h"
+# include "../minilibx-linux/mlx.h"
 
 # define RED				0xFF0000
 # define GRAY				0x808080
@@ -40,8 +44,23 @@
 # define FROM_WALL 10
 # define PLAYER_RADIUS 10
 # define ANGLE_ROTATE 0.05
-
 # define MAP_2D 0
+
+// yoong value
+# define END 0
+# define FREE -1
+# define ADD 1
+# define PI 3.14159265359
+# define WIDTH 600
+# define HEIGHT 300
+# define BLOCK 64
+# define DEBUG 0
+# define NTH 0
+# define STH 1
+# define EST 2
+# define WST 3
+# define FLOOR 4
+# define CEIL 5
 
 typedef struct s_player
 {
@@ -52,6 +71,28 @@ typedef struct s_player
     double plane_x;             // camera plane
     double plane_y;              
 }               t_player;
+
+typedef struct s_game
+{
+	void			*mlx_ptr;
+	void			*win_ptr;
+	void			*img_ptr;
+	char			*data;
+	int				bpp;
+	int				size_line;
+	int				endian;
+	t_player		player;
+	char			**map;
+	char			*n;
+	char			*s;
+	char			*e;
+	char			*w;
+	int				f[3];
+	int				c[3];
+	int				row;
+	int				col;
+}	t_game;
+
 
 typedef struct s_image
 {
@@ -163,5 +204,34 @@ void draw_line(t_data *data, int beginX, int beginY, int endX, int endY, int col
 void draw_circle(t_data *data, int cx, int cy, int radius, int color);
 void clear_window(t_data *data);
 void draw_point_map(int x, int y, t_data *data);
+
+// smart ptr for storing freeable ptr
+void	smart_ptr(void *ptr, int action);
+// error handling
+int		identify(char *type);
+bool	processline(char *s);
+void	checking(int ac, char *av[]);
+void	findstartpos(t_game *game, int *coor);
+bool	dfs(t_game *game, bool visit[2000][2000], int r, int c);
+bool	validmap(t_game *game, int lr, int lc);
+bool	checkcolor(char **tmp, int id, int c);
+bool	checkmap(t_game *game);
+// helper func
+int		max(int a, int b);
+void	freesplit(char **s);
+void	freetmparr(char **tmp);
+void	freegamemap(t_game *game);
+int		char2dlen(char **s);
+char	**openfile(const char *dir);
+bool	isemptystr(char *s);
+// load data from .cub file
+bool	loadmap(t_game *game, char **ss);
+void	loadcheckmap(t_game *game, char	**ss, char **tmp);
+int		parseint(char *s, int *i, int n);
+void	loadfc(t_game *game, char **tmp, int fc);
+void	loadpath(t_game *game, char **tmp);
+void	loadvar(char *av[], t_game *game);
+// gnl
+char	*get_next_line(int fd);
 
 #endif
