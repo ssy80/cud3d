@@ -38,6 +38,14 @@ int	render(t_data *data)
     return (0);
 }
 
+int get_hex_color(int c[3])
+{
+    int hex_color;
+
+    hex_color = 0;
+    hex_color = (c[0] << 16) | (c[1] << 8) | c[2];
+    return (hex_color);
+}
 
 int main(int ac, char **av)
 {
@@ -47,12 +55,15 @@ int main(int ac, char **av)
     checking(ac, av);
 	loadvar(av, &game);
 	gamevar(&game);
+
     ft_bzero(&data, sizeof(t_data));
     data.my_map = game.map;
+    data.ceiling_color = get_hex_color(game.c);
+    data.floor_color = get_hex_color(game.f);
+    
     load_player(&data);
     init(&data);
     load_wall_texture(&data, &game);
-	//render(&data);
 	init_event_hooks(&data);
     mlx_loop_hook(data.mlx, render, &data);
 	mlx_loop(data.mlx);

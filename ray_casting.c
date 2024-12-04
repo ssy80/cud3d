@@ -185,14 +185,60 @@ static void get_texture_x(t_ray *ray)
     // Map wallX to the texture's x-coordinate (0 to TEXTURE_WIDTH)
     //texture_x = (int)(ray->wall_x * (double)BOX_WIDTH);
     ray->texture_x = (int)(ray->wall_x * (double)ray->chosen_texture.width);
-    if ((ray->side == 0 && ray->ray_dir_x > 0) || (ray->side == 1 && ray->ray_dir_y < 0)) 
+//    if ((ray->side == 0 && ray->ray_dir_x > 0) || (ray->side == 1 && ray->ray_dir_y < 0)) 
         //texture_x = BOX_WIDTH - texture_x - 1; // Flip texture for certain sides to correct orientation
-        ray->texture_x = ray->chosen_texture.width - ray->texture_x - 1; // Flip texture for certain sides to correct orientation
+//        ray->texture_x = ray->chosen_texture.width - ray->texture_x - 1; // Flip texture for certain sides to correct orientation
+        // ray->texture_x = ray->chosen_texture.width - ray->texture_x - 1;
+
+        // Flip condition (refine based on your ray casting logic)
+    if (ray->side == 0 && ray->ray_dir_x < 0) // Flip horizontally for specific wall
+        ray->texture_x = ray->chosen_texture.width - ray->texture_x - 1;
+    else if (ray->side == 1 && ray->ray_dir_y > 0) // Flip vertically for another wall
+        ray->texture_x = ray->chosen_texture.width - ray->texture_x - 1;
+
+
+        
     if (ray->texture_x < 0) 
         ray->texture_x = 0;
     if (ray->texture_x >= ray->chosen_texture.width) 
         ray->texture_x = ray->chosen_texture.width - 1;
 }
+
+/*static void get_texture_x(t_ray *ray) {
+    // Vertical mapping
+    ray->top_dist = (y * 256 - WINDOW_HEIGHT * 128 + ray->line_height * 128);
+    ray->texture_y = (ray->top_dist * ray->chosen_texture.height) / (ray->line_height * 256);
+
+    // Vertical flip (if needed)
+    ray->texture_y = ray->chosen_texture.height - ray->texture_y - 1;
+
+    // Clamp texture_y
+    if (ray->texture_y < 0)
+        ray->texture_y = 0;
+    if (ray->texture_y >= ray->chosen_texture.height)
+        ray->texture_y = ray->chosen_texture.height - 1;
+
+    // Horizontal mapping (flip texture horizontally)
+    ray->texture_x = ray->chosen_texture.width - ray->texture_x - 1;
+
+    // Clamp texture_x
+    if (ray->texture_x < 0)
+        ray->texture_x = 0;
+    if (ray->texture_x >= ray->chosen_texture.width)
+        ray->texture_x = ray->chosen_texture.width - 1;
+}*/
+
+/*static void get_texture_x(t_ray *ray) {
+    // Flip texture horizontally
+    ray->texture_x = ray->chosen_texture.width - ray->texture_x - 1;
+
+    // Clamp texture_x within valid range (optional for safety)
+    if (ray->texture_x < 0)
+        ray->texture_x = 0;
+    if (ray->texture_x >= ray->chosen_texture.width)
+        ray->texture_x = ray->chosen_texture.width - 1;
+}*/
+
 
 static void get_texture_y(t_ray *ray, int y)
 {
@@ -203,6 +249,24 @@ static void get_texture_y(t_ray *ray, int y)
     if (ray->texture_y >= BOX_HEIGHT) 
         ray->texture_y = BOX_HEIGHT - 1;
 }
+
+/*static void get_texture_y(t_ray *ray, int y) {
+    // Calculate distance from top of the screen in scaled space
+    ray->top_dist = (y * 256 - WINDOW_HEIGHT * 128 + ray->line_height * 128);
+
+    // Map y-coordinate to the texture coordinate
+    ray->texture_y = (ray->top_dist * ray->chosen_texture.height) / (ray->line_height * 256);
+
+    // Flip texture vertically if needed
+    ray->texture_y = ray->chosen_texture.height - ray->texture_y - 1;
+
+    // Clamp texture_y within valid range
+    if (ray->texture_y < 0)
+        ray->texture_y = 0;
+    if (ray->texture_y >= ray->chosen_texture.height)
+        ray->texture_y = ray->chosen_texture.height - 1;
+}*/
+
 
 /* draw the texure wall on screen */
 static void draw_texture_wall(t_ray *ray, t_data *data, int x)
@@ -230,7 +294,8 @@ static void draw_ceiling(t_ray *ray, t_data *data, int x)
     y = 0;
     while (y < ray->draw_start_y)
     {
-        my_mlx_pixel_put(&(data->t_img), x, y, CEILING_COLOR);
+        //my_mlx_pixel_put(&(data->t_img), x, y, CEILING_COLOR);
+        my_mlx_pixel_put(&(data->t_img), x, y, data->ceiling_color);
         y++;
     }
 }
@@ -242,7 +307,8 @@ static void draw_floor(t_ray *ray, t_data *data, int x)
     y = ray->draw_end_y;
     while (y < WINDOW_HEIGHT)
     {
-        my_mlx_pixel_put(&(data->t_img), x, y, FLOOR_COLOR);
+        //my_mlx_pixel_put(&(data->t_img), x, y, FLOOR_COLOR);
+        my_mlx_pixel_put(&(data->t_img), x, y, data->floor_color);
         y++;
     }
 }

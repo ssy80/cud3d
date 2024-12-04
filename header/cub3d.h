@@ -30,8 +30,8 @@
 # define WHITE              0xFFFFFF
 # define BLUE               0x0000FF
 
-# define CEILING_COLOR      0x87CEEB
-# define FLOOR_COLOR        0x964B00
+//# define CEILING_COLOR      0x87CEEB
+//# define FLOOR_COLOR        0x964B00
 
 
 # define WINDOW_WIDTH			2112
@@ -127,6 +127,8 @@ typedef struct	s_data
     t_texture so;
     t_texture we;
     t_texture ea;
+    int ceiling_color;
+    int floor_color;
 }				t_data;
 
 
