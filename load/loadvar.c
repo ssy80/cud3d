@@ -48,6 +48,8 @@ void	loadfc(t_game *game, char **tmp, int fc)
 
 void	loadpath(t_game *game, char **tmp)
 {
+	int	i;
+
 	game->n = tmp[NTH];
 	game->s = tmp[STH];
 	game->e = tmp[EST];
@@ -59,6 +61,12 @@ void	loadpath(t_game *game, char **tmp)
 		smart_ptr(NULL, FREE), exit(1));
 	loadfc(game, tmp, FLOOR);
 	loadfc(game, tmp, CEIL);
+	i = -1;
+	while (++i < 3)
+		if (game->f[i] < 0 || game->f[i] > 255 || game->c[i] < 0 \
+		|| game->c[i] > 255)
+			return (ft_putstr_fd("Error in color\n", 1), freetmparr(tmp), \
+			smart_ptr(NULL, FREE), exit(1));
 }
 
 static void	end(char *errmsg, char **paths, char **ss)

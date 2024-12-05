@@ -218,6 +218,7 @@ bool	dfs(t_game *game, bool visit[2000][2000], int r, int c);
 bool	validmap(t_game *game, int lr, int lc);
 bool	checkcolor(char **tmp, int id, int c);
 bool	checkmap(t_game *game);
+bool	checkcolorval(char **tmp, int id);
 // helper func
 int		max(int a, int b);
 void	freesplit(char **s);

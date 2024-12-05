@@ -16,6 +16,7 @@ SRC			= ${DIR}/cub3d.c \
 					${DIR_ERR}/err_manage.c\
 					${DIR_ERR}/err_mapcheck.c\
 					${DIR_ERR}/err_smartptr.c\
+					${DIR_ERR}/err_color.c\
 					${DIR_LOAD}/loadmap.c\
 					${DIR_LOAD}/loadvar.c\
 					${DIR_HELPER}/char2dlen.c\

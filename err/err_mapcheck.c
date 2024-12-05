@@ -64,7 +64,8 @@ bool	validmap(t_game *game, int lr, int lc)
 	return (!dfs(game, visit, pos[0], pos[1]));
 }
 
-// check that 3 color values are within 0 - 255 
+// check that 3 color values are within 0 - 255
+// int c is injected because lacked of space to declare
 bool	checkcolor(char **tmp, int id, int c)
 {
 	int	i;
