@@ -52,46 +52,16 @@ bool	dfs(t_game *game, bool visit[2000][2000], int r, int c)
 }
 
 // check that map is enclosed
-bool	validmap(t_game *game, int lr, int lc)
+bool	validmap(t_game *game)
 {
 	bool	visit[2000][2000];
 	int		pos[2];
 
 	ft_bzero(visit, sizeof(bool) * 2000 * 2000);
-	if (lr > 2000 || lc > 2000)
+	if (game->row > 2000 || game->col > 2000)
 		return (ft_putstr_fd("map too big\n", 1), false);
 	findstartpos(game, pos);
 	return (!dfs(game, visit, pos[0], pos[1]));
-}
-
-// check that 3 color values are within 0 - 255
-// int c is injected because lacked of space to declare
-bool	checkcolor(char **tmp, int id, int c)
-{
-	int	i;
-	int	j;
-	int	n;
-
-	i = 0;
-	while (tmp[id][i])
-	{
-		j = 0;
-		n = 0;
-		while (tmp[id][j + i] && tmp[id][j + i] != ',')
-			if (ft_isdigit(tmp[id][i + j++]))
-				n++;
-		if (n <= 0 || n > 3)
-			return (false);
-		if (tmp[id][i + j] == ',')
-			c++;
-		if (j > 0)
-			i += j + 1;
-		else
-			i++;
-	}
-	if (c != 2 || tmp[id][i - 1] == ',' || tmp[id][i - 1] == ' ')
-		return (false);
-	return (true);
 }
 
 // check map for wrong character
@@ -117,7 +87,8 @@ bool	checkmap(t_game *game)
 		if (i != ' ' && i != '1' && i != '0' && i != 'N' \
 		&& i != 'S' && i != 'E' && i != 'W' && i != '\n')
 			j += in[i];
-	if (j > 0)
-		return (false);
+	if (j > 0 || !validmap(game))
+		return (freegamemap(game), \
+		ft_putstr_fd("error invalid map", 1) ,exit(1), false);
 	return (true);
 }

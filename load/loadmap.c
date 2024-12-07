@@ -33,6 +33,7 @@ static void	copymap(t_list *head, t_game *game, t_list *cp)
 	}
 }
 
+// after loading map, free t_list from gnl
 void	loadmap(t_list *head, t_game *game)
 {
 	int			l;
