@@ -13,55 +13,13 @@
 #include "../header/cub3d.h"
 #include "../header/libft.h"
 
-int	identify(char *type)
-{
-	int	len;
-
-	len = ft_strlen(type);
-	if (len >= 2 && type[0] == 'F' && type[1] == ' ')
-		return (FLOOR);
-	if (len >= 2 && type[0] == 'C' && type[1] == ' ')
-		return (CEIL);
-	if (len >= 3 && type[2] == ' ')
-	{
-		if (type[0] == 'N' && type[1] == 'O')
-			return (NTH);
-		if (type[0] == 'S' && type[1] == 'O')
-			return (STH);
-		if (type[0] == 'W' && type[1] == 'E')
-			return (WST);
-		if (type[0] == 'E' && type[1] == 'A')
-			return (EST);
-	}
-	return (-1);
-}
-
-bool	processline(char *s)
-{
-	char	**split;
-	int		i;
-
-	split = ft_split(s, ' ');
-	if (!split)
-		return (ft_putstr_fd("ft_split error", 1), exit(1), 0);
-	i = 0;
-	while (split[i])
-		i++;
-	if (i != 2)
-		return (ft_putstr_fd("Error: ", 1), ft_putstr_fd(s, 1), \
-		freesplit(split), false);
-	if (identify(split[0]) >= 0)
-		return (freesplit(split), true);
-	return (freesplit(split), false);
-}
-
 // check for 2 args
 // check 2nd arg with len of 5 or more and ending with .cub
-void	checking(int ac, char *av[])
+void	checking(int ac, char *av[], t_game *game)
 {
-	int		l;
-	char	**content;
-	bool	id[6];
+	int			l;
+	t_list		*content;
+	bool		id[6];
 
 	ft_bzero(id, sizeof(bool) * 6);
 	if (ac != 2)
@@ -73,13 +31,7 @@ void	checking(int ac, char *av[])
 	content = openfile(av[1]);
 	if (!content)
 		return (ft_putstr_fd("Error\n", STDOUT_FILENO), exit(1));
-	l = -1;
-	while (content[++l] && l < 6)
-		if (identify(content[l]) != -1)
-			id[identify(content[l])] = true;
-	l = -1;
-	while (++l < 6)
-		if (!id[l])
-			return (ft_putstr_fd("Error in identifier\n", 1), exit(1));
-	freesplit(content);
+	loadvar(content, game);
+	loadmap(content, game);
+	ft_lstclear(&content, free);
 }

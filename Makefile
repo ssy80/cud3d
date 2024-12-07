@@ -71,3 +71,6 @@ re: fclean all
 
 norm:
 	norminette ./load ./gnl ./err 
+
+test: ${NAME}
+	./${NAME} maps/test.cub

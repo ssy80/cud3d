@@ -74,19 +74,11 @@ typedef struct s_player
 
 typedef struct s_game
 {
-	void			*mlx_ptr;
-	void			*win_ptr;
-	void			*img_ptr;
-	char			*data;
-	int				bpp;
-	int				size_line;
-	int				endian;
-	t_player		player;
 	char			**map;
-	char			*n;
-	char			*s;
-	char			*e;
-	char			*w;
+	char			n[512];
+	char			s[512];
+	char			e[512];
+	char			w[512];
 	int				f[3];
 	int				c[3];
 	int				row;
@@ -210,31 +202,26 @@ void draw_point_map(int x, int y, t_data *data);
 // smart ptr for storing freeable ptr
 void	smart_ptr(void *ptr, int action);
 // error handling
-int		identify(char *type);
-bool	processline(char *s);
-void	checking(int ac, char *av[]);
+void	checking(int ac, char *av[], t_game *game);
 void	findstartpos(t_game *game, int *coor);
 bool	dfs(t_game *game, bool visit[2000][2000], int r, int c);
 bool	validmap(t_game *game, int lr, int lc);
 bool	checkcolor(char **tmp, int id, int c);
 bool	checkmap(t_game *game);
-bool	checkcolorval(char **tmp, int id);
+bool	checkcolorval(char *str);
+void	loadcolor(int *arr, char *s, t_list *head);
 // helper func
 int		max(int a, int b);
 void	freesplit(char **s);
 void	freetmparr(char **tmp);
 void	freegamemap(t_game *game);
 int		char2dlen(char **s);
-char	**openfile(const char *dir);
+t_list  *openfile(const char *dir);
 bool	isemptystr(char *s);
 // load data from .cub file
-bool	loadmap(t_game *game, char **ss);
-void	loadcheckmap(t_game *game, char	**ss, char **tmp);
-int		parseint(char *s, int *i, int n);
-void	loadfc(t_game *game, char **tmp, int fc);
-void	loadpath(t_game *game, char **tmp);
-void	loadvar(char *av[], t_game *game);
-void	gamevar(t_game *game);
+int		identify(char *type);
+void	loadvar(t_list *head, t_game *game);
+void	loadmap(t_list *head, t_game *game);
 // gnl
 char	*get_next_line(int fd);
 

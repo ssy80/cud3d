@@ -13,61 +13,49 @@
 #include "../header/cub3d.h"
 #include "../header/libft.h"
 
-static void	delnextline(char *str)
-{
-	int	l;
-
-	if (!str)
-		return ;
-	l = ft_strlen(str);
-	if (str[l - 1] == '\n')
-		str[l - 1] = '\0';
-}
-
-void	gamevar(t_game *game)
+static void	copymap(t_list *head, t_game *game, t_list *cp)
 {
 	int	i;
 
 	i = -1;
-	delnextline(game->n);
-	delnextline(game->s);
-	delnextline(game->w);
-	delnextline(game->e);
-	while (++i < game->row)
-		delnextline(game->map[i]);
-}
-
-bool	loadmap(t_game *game, char **ss)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	j = 0;
-	while (ss[++i])
-		j = max(ft_strlen(ss[i]), j);
-	game->map = ft_calloc(i + 1, sizeof(char *));
-	i = -1;
-	while (ss[++i])
+	game->map = ft_calloc(game->row + 1, sizeof(char *));
+	if (!game->map)
+		return (ft_putstr_fd("Error Malloc\n", 1), \
+		ft_lstclear(&head, free), exit(1));
+	while (++i < game->row && cp)
 	{
-		game->map[i] = ft_calloc(j + 1, sizeof(char));
-		ft_memcpy(game->map[i], ss[i], ft_strlen(ss[i]));
+		game->map[i] = ft_calloc(game->col + 1, sizeof(char));
+		if (!game->map[i])
+			return (ft_putstr_fd("Error Malloc\n", 1), \
+			ft_lstclear(&head, free), freesplit(game->map), exit(1));
+		ft_memcpy(game->map[i], cp->content, ft_strlen(cp->content));
+		cp = cp->next;
 	}
-	game->row = i;
-	game->col = j;
-	if (!checkmap(game) || !validmap(game, i, j))
-		return (false);
-	return (true);
 }
 
-void	loadcheckmap(t_game *game, char	**ss, char **tmp)
+void	loadmap(t_list *head, t_game *game)
 {
-	if (loadmap(game, ss + 6))
-		return ;
-	freesplit(ss);
-	freegamemap(game);
-	freetmparr(tmp);
-	ft_putstr_fd("Error in map\n", 1);
-	smart_ptr(NULL, FREE);
-	exit(1);
+	int			l;
+	t_list		*cp;
+	t_list		*cp1;
+	int			maxlen;
+	char		*str;
+
+	l = -1;
+	cp = head;
+	maxlen = 0;
+	while (cp && ++l < 6)
+		cp = cp->next;
+	cp1 = cp;
+	while (cp1)
+	{
+		str = cp1->content;
+		if (str[ft_strlen(cp1->content) - 1] == '\n')
+			str[ft_strlen(cp1->content) - 1] = '\0';
+		maxlen = max(maxlen, ft_strlen(str));
+		game->row++;
+		cp1 = cp1->next;
+	}
+	game->col = maxlen;
+	copymap(head, game, cp);
 }

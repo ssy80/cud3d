@@ -19,55 +19,32 @@ static void	closefile(int fd)
 	return ;
 }
 
-static char	**ll_to_2darr(t_list *head)
-{
-	char	**arr;
-	int		i;
-	int		size;
-	t_list	*np;
-
-	i = -1;
-	np = head;
-	size = ft_lstsize(head);
-	arr = malloc((size + 1) * sizeof(char *));
-	if (!arr)
-		return (smart_ptr(NULL, END), NULL);
-	smart_ptr(arr, ADD);
-	arr[size] = 0;
-	while (head)
-	{
-		arr[++i] = head->content;
-		np = head->next;
-		free(head);
-		head = NULL;
-		head = np;
-	}
-	return (arr);
-}
-
 bool	isemptystr(char *s)
 {
-	char	*res;
+	int	set[128];
+	int	i;
 
-	if (!s)
-		return (true);
-	res = ft_strtrim(s, " \n\t\r");
-	if (ft_strlen(res) == 0)
+	i = -1;
+	ft_bzero(set, sizeof(int) * 128);
+	while (s[++i])
+		set[(int) s[i]]++;
+	i = -1;
+	while (++i < 128)
 	{
-		free(s);
-		s = NULL;
-		return (free(res), true);
+		if (i == ' ' || i == '\n' || i == '\t' || i == '\r')
+			continue;
+		if (set[i] > 0)
+			return (false);
 	}
-	return (free(res), false);
+	return (true);
 }
 
-char	**openfile(const char *dir)
+t_list	*openfile(const char *dir)
 {
 	int		fd;
 	char	*ans;
 	t_list	*head;
 	t_list	*cp;
-	char	**arr;
 
 	head = NULL;
 	fd = open(dir, O_RDWR);
@@ -84,8 +61,5 @@ char	**openfile(const char *dir)
 		}
 		ans = get_next_line(fd);
 	}
-	arr = ll_to_2darr(head);
-	if (!arr)
-		return (ft_lstclear(&head, free), closefile(fd), NULL);
-	return (closefile(fd), arr);
+	return (closefile(fd), head);
 }

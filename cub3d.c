@@ -52,10 +52,7 @@ int main(int ac, char **av)
     t_data data;
     t_game  game;
 
-    checking(ac, av);
-	loadvar(av, &game);
-	gamevar(&game);
-
+    checking(ac, av, &game);
     ft_bzero(&data, sizeof(t_data));
     data.my_map = game.map;
     data.ceiling_color = get_hex_color(game.c);
