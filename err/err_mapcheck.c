@@ -39,11 +39,11 @@ void	findstartpos(t_game *game)
 // depth first search for space and out of map
 bool	dfs(t_game *game, bool visit[2000][2000], int r, int c)
 {
-	if (visit[r][c] || game->map[r][c] == '1')
-		return (false);
 	if (r < 0 || c < 0 || r >= game->row \
 	|| c >= game->col || game->map[r][c] == ' ')
 		return (true);
+	if (visit[r][c] || game->map[r][c] == '1')
+		return (false);
 	visit[r][c] = true;
 	return (dfs(game, visit, r + 1, c) || dfs(game, visit, r - 1, c) \
 	|| dfs(game, visit, r, c + 1) || dfs(game, visit, r, c - 1));
@@ -53,8 +53,8 @@ bool	dfs(t_game *game, bool visit[2000][2000], int r, int c)
 bool	validmap(t_game *game)
 {
 	bool	visit[2000][2000];
-	// int		r;
-	// int		c;
+	int		r;
+	int		c;
 
 	ft_bzero(visit, sizeof(bool) * 2000 * 2000);
 	if (game->row > 2000 || game->col > 2000)
@@ -62,15 +62,15 @@ bool	validmap(t_game *game)
 	findstartpos(game);
 	if (dfs(game, visit, game->pr, game->pc))
 		return (false);
-	// r = -1;
-	// while (++r < game->row)
-	// {
-	// 	c = -1;
-	// 	while (++c < game->col)
-	// 		if (!visit[r][c] && game->map[r][c] == '0')
-	// 			if (dfs(game, visit, r, c))
-	// 				return (false);
-	// }
+	r = -1;
+	while (++r < game->row)
+	{
+		c = -1;
+		while (++c < game->col)
+			if (!visit[r][c] && game->map[r][c] == '0')
+				if (dfs(game, visit, r, c))
+					return (false);
+	}
 	return (true);
 }
 

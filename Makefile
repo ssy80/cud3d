@@ -82,6 +82,10 @@ t2: ${NAME}
 t0: ${NAME}
 	for map in maps/bad/*; do echo -n "$$map" ": ";./cub3d "$$map";  done
 
+# teseting all working map
+t1: ${NAME}
+	for map in maps/*.cub; do echo -n "$$map" ": ";./cub3d "$$map";echo "\n";  done
+
 run :
 	./$(NAME) test.cub
 
