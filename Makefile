@@ -72,5 +72,12 @@ re: fclean all
 norm:
 	norminette ./load ./gnl ./err 
 
-test: ${NAME}
+t1: ${NAME}
 	./${NAME} maps/test.cub
+
+t2: ${NAME}
+	./${NAME} maps/works.cub
+
+# testing all bad map
+t0: ${NAME}
+	for map in maps/bad/*; do echo -n "$$map" ": ";./cub3d "$$map";  done

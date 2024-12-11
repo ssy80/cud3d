@@ -66,7 +66,8 @@ void	loadnsew(t_list *head, char *trim, t_game *game)
 	if (!str)
 		return (ft_putstr_fd("Error Malloc\n", 1), ft_lstclear(&head, free), \
 		exit(1), free(trim));
-	if (char2dlen(str) != 2)
+	if (char2dlen(str) != 2 && !(identify(str[0]) == FLOOR \
+	|| identify(str[0]) == CEIL))
 		return (ft_putstr_fd("Error Parsing\n", 1), ft_lstclear(&head, free), \
 		freesplit(str), free(trim), exit(1));
 	idno = identify(str[0]);

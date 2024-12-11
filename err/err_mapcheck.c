@@ -14,14 +14,12 @@
 #include "../header/libft.h"
 
 // find starting pos(to be used after ensuring that map is valid)
-void	findstartpos(t_game *game, int *coor)
+void	findstartpos(t_game *game)
 {
 	int	r;
 	int	c;
 
 	r = -1;
-	coor[0] = -1;
-	coor[1] = -1;
 	while (game->map[++r])
 	{
 		c = -1;
@@ -30,8 +28,8 @@ void	findstartpos(t_game *game, int *coor)
 			if (game->map[r][c] == 'N' || game->map[r][c] == 'S' || \
 			game->map[r][c] == 'E' || game->map[r][c] == 'W')
 			{
-				coor[0] = r;
-				coor[1] = c;
+				game->pr = r;
+				game->pc = c;
 				break ;
 			}
 		}
@@ -55,13 +53,25 @@ bool	dfs(t_game *game, bool visit[2000][2000], int r, int c)
 bool	validmap(t_game *game)
 {
 	bool	visit[2000][2000];
-	int		pos[2];
+	// int		r;
+	// int		c;
 
 	ft_bzero(visit, sizeof(bool) * 2000 * 2000);
 	if (game->row > 2000 || game->col > 2000)
 		return (ft_putstr_fd("map too big\n", 1), false);
-	findstartpos(game, pos);
-	return (!dfs(game, visit, pos[0], pos[1]));
+	findstartpos(game);
+	if (dfs(game, visit, game->pr, game->pc))
+		return (false);
+	// r = -1;
+	// while (++r < game->row)
+	// {
+	// 	c = -1;
+	// 	while (++c < game->col)
+	// 		if (!visit[r][c] && game->map[r][c] == '0')
+	// 			if (dfs(game, visit, r, c))
+	// 				return (false);
+	// }
+	return (true);
 }
 
 // check map for wrong character
@@ -89,6 +99,6 @@ bool	checkmap(t_game *game)
 			j += in[i];
 	if (j > 0 || !validmap(game))
 		return (freegamemap(game), \
-		ft_putstr_fd("error invalid map", 1) ,exit(1), false);
+		ft_putstr_fd("error invalid map\n", 1), exit(1), false);
 	return (true);
 }

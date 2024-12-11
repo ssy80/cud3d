@@ -83,6 +83,8 @@ typedef struct s_game
 	int				c[3];
 	int				row;
 	int				col;
+	int				pr;
+	int				pc;
 }	t_game;
 
 
@@ -203,7 +205,7 @@ void draw_point_map(int x, int y, t_data *data);
 void	smart_ptr(void *ptr, int action);
 // error handling
 void	checking(int ac, char *av[], t_game *game);
-void	findstartpos(t_game *game, int *coor);
+void	findstartpos(t_game *game);
 bool	dfs(t_game *game, bool visit[2000][2000], int r, int c);
 bool	validmap(t_game *game);
 bool	checkmap(t_game *game);
