@@ -70,7 +70,7 @@ re: fclean all
 .PHONY: all clean fclean re
 
 norm:
-	norminette ./load ./gnl ./err 
+	norminette ./load ./gnl ./err ./helper ./libft 
 
 test: ${NAME}
 	./${NAME} maps/test.cub
@@ -82,6 +82,9 @@ t2: ${NAME}
 t0: ${NAME}
 	for map in maps/bad/*; do echo -n "$$map" ": ";./cub3d "$$map";  done
 
-# teseting all working map
+# testing all working map
 t1: ${NAME}
 	for map in maps/*.cub; do echo -n "$$map" ": ";./cub3d "$$map";echo "\n";  done
+
+leak: ${NAME}
+	valgrind --leak-check=full ./cub3d maps/bad/color_missing_ceiling_rgb.cub
