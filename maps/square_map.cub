@@ -1,17 +1,12 @@
-   WE                            pics/eagle.xpm 
-NO      pics/grey_stone.xpm
-
-
-
+WE pics/eagle.xpm
+NO pics/grey_stone.xpm
 SO pics/red_brick.xpm
 
-F   69, 222, 199
+F 69,222,199
 
 EA pics/mossy.xpm
 
-
-
-C 235, 198, 52
+C 235,198,52
 
 111111111111111111111111
 100000000000000000000001
