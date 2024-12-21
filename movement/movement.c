@@ -11,16 +11,28 @@
 /* ************************************************************************** */
 #include "cub3d.h"
 
-/*  check the square the x,y is in is a wall? */
+/*  check the square the x,y is in is a wall, and 
+	to prevent diagonal movoment */
 int	check_point_in_wall(int x, int y, t_data *data)
 {
 	int	box_x;
 	int	box_y;
+	int can_move_x;
+	int can_move_y;
 
 	box_x = x / BOX_HEIGHT;
 	box_y = y / BOX_WIDTH;
 	if (data->my_map[box_y][box_x] == '1')
 		return (1);
+	else
+	{
+		can_move_x = (data->my_map[(int)(data->player.pos_y/BOX_WIDTH)][box_x] != '1');
+    	can_move_y = (data->my_map[box_y][(int)(data->player.pos_x)/BOX_HEIGHT] != '1');
+		if (can_move_x && can_move_y)
+			return (0);
+		else
+			return (1);
+	}
 	return (0);
 }
 

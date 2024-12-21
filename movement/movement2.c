@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "cub3d.h"
 
-/** rotate dir and plane*/
+/* rotate dir and plane left*/
 void	rotate_player_left(double *dir_x, double *dir_y,
 		double *plane_x, double *plane_y)
 {
@@ -28,6 +28,7 @@ void	rotate_player_left(double *dir_x, double *dir_y,
 		+ (*plane_y * cos(-ANGLE_ROTATE));
 }
 
+/* rotate dir and plane right*/
 void	rotate_player_right(double *dir_x, double *dir_y,
 		double *plane_x, double *plane_y)
 {

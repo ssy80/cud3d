@@ -73,32 +73,13 @@ void	perform_dda(t_ray *ray, t_data *data)
 			ray->side_dist_x = ray->side_dist_x + ray->delta_dist_x;
 			ray->box_x = ray->box_x + ray->step_x;
 			ray->side = 0;
-
-			// Check map bounds
-            /*if (ray->box_x < 0 || ray->box_x >= 15) {
-                printf("Ray out of bounds (X-direction)\n");
-                break;
-            }*/
 		}
 		else
 		{
 			ray->side_dist_y = ray->side_dist_y + ray->delta_dist_y;
 			ray->box_y = ray->box_y + ray->step_y;
 			ray->side = 1;
-
-			// Check map bounds
-            /*if (ray->box_y < 0 || ray->box_y >= 10) {
-                printf("Ray out of bounds (Y-direction)\n");
-                break;
-            }*/
 		}
-		/*if (ray->box_x < 0 || ray->box_x >= 15 || ray->box_y < 0 || ray->box_y >= 10) 
-		{
-    		printf("Ray exited the map boundaries.\n");
-			continue ;
-    	//	break;
-		}*/
-
 		if (data->my_map[ray->box_y][ray->box_x] == '1')
 			hit = 1;
 	}
