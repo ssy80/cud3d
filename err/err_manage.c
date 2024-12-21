@@ -23,14 +23,14 @@ void	checking(int ac, char *av[], t_game *game)
 
 	ft_bzero(id, sizeof(bool) * 6);
 	if (ac != 2)
-		return (ft_putstr_fd("only 1 arg\n", STDOUT_FILENO), exit(1));
+		return (ft_putstr_fd("only 1 arg\n", 1), exit(1));
 	l = ft_strlen(av[1]);
 	if (l < 5 || !(av[1][l - 4] == '.' && av[1][l - 3] == 'c' \
 	&& av[1][l - 2] == 'u' && av[1][l - 1] == 'b'))
-		return (ft_putstr_fd("incorrect file\n", STDOUT_FILENO), exit(1));
+		return (ft_putstr_fd("Error\nincorrect file\n", 1), exit(1));
 	content = openfile(av[1]);
 	if (!content)
-		return (ft_putstr_fd("Error\n", STDOUT_FILENO), exit(1));
+		return (ft_putstr_fd("Error\nFile error", 1), exit(1));
 	loadvar(content, game);
 	loadmap(content, game);
 	ft_lstclear(&content, free);

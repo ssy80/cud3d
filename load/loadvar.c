@@ -42,12 +42,12 @@ void	loadfc(t_list *head, char *trim, t_game *game)
 
 	idno = identify(trim);
 	if (idno == -1)
-		return (ft_putstr_fd("Error Parsing\n", 1), ft_lstclear(&head, free), \
+		return (ft_putstr_fd("Error\nParsing\n", 1), ft_lstclear(&head, free), \
 		free(trim), exit(1));
 	if (idno == FLOOR || idno == CEIL)
 	{
 		if (!checkcolorval(trim + 2))
-			return (ft_putstr_fd("Error Parsing\n", 1), \
+			return (ft_putstr_fd("Error\nParsing\n", 1), \
 			ft_lstclear(&head, free), free(trim), exit(1));
 		if (idno == FLOOR)
 			loadcolor(game->f, trim + 2, head);
@@ -64,15 +64,15 @@ void	loadnsew(t_list *head, char *trim, t_game *game)
 
 	str = ft_split(trim, ' ');
 	if (!str)
-		return (ft_putstr_fd("Error Malloc\n", 1), ft_lstclear(&head, free), \
+		return (ft_putstr_fd("Error\nMalloc\n", 1), ft_lstclear(&head, free), \
 		exit(1), free(trim));
 	if (char2dlen(str) != 2 && !(identify(str[0]) == FLOOR \
 	|| identify(str[0]) == CEIL))
-		return (ft_putstr_fd("Error Parsing\n", 1), ft_lstclear(&head, free), \
+		return (ft_putstr_fd("Error\nParsing\n", 1), ft_lstclear(&head, free), \
 		freesplit(str), free(trim), exit(1));
 	idno = identify(str[0]);
 	if (idno == -1 || ft_strlen(str[1]) >= 512)
-		return (ft_putstr_fd("Error Parsing\n", 1), ft_lstclear(&head, free), \
+		return (ft_putstr_fd("Error\nParsing\n", 1), ft_lstclear(&head, free), \
 		freesplit(str), free(trim), exit(1));
 	if (idno == NTH)
 		ft_memcpy(game->n, str[1], ft_strlen(str[1]));
@@ -100,7 +100,7 @@ void	loadvar(t_list *head, t_game *game)
 	{
 		trim = ft_strtrim(cp->content, " \t\r\n");
 		if (!trim)
-			return (ft_putstr_fd("Error Malloc\n", 1), \
+			return (ft_putstr_fd("Error\nMalloc\n", 1), \
 			ft_lstclear(&head, free), exit(1));
 		loadnsew(head, trim, game);
 		loadfc(head, trim, game);
@@ -108,6 +108,6 @@ void	loadvar(t_list *head, t_game *game)
 		cp = cp->next;
 	}
 	if (n != 6)
-		return (ft_putstr_fd("Error Incomplete\n", 1), \
+		return (ft_putstr_fd("Error\nIncomplete\n", 1), \
 		ft_lstclear(&head, free), exit(1));
 }

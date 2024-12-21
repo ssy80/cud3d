@@ -20,13 +20,13 @@ static void	copymap(t_list *head, t_game *game, t_list *cp)
 	i = -1;
 	game->map = ft_calloc(game->row + 1, sizeof(char *));
 	if (!game->map)
-		return (ft_putstr_fd("Error Malloc\n", 1), \
+		return (ft_putstr_fd("Error\nMalloc\n", 1), \
 		ft_lstclear(&head, free), exit(1));
 	while (++i < game->row && cp)
 	{
 		game->map[i] = ft_calloc(game->col + 1, sizeof(char));
 		if (!game->map[i])
-			return (ft_putstr_fd("Error Malloc\n", 1), \
+			return (ft_putstr_fd("Error\nMalloc\n", 1), \
 			ft_lstclear(&head, free), freesplit(game->map), exit(1));
 		ft_memcpy(game->map[i], cp->content, ft_strlen(cp->content));
 		cp = cp->next;

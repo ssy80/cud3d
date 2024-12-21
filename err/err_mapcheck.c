@@ -99,6 +99,6 @@ bool	checkmap(t_game *game)
 			j += in[i];
 	if (j > 0 || !validmap(game))
 		return (freegamemap(game), \
-		ft_putstr_fd("error invalid map\n", 1), exit(1), false);
+		ft_putstr_fd("error\ninvalid map\n", 1), exit(1), false);
 	return (true);
 }

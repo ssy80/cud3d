@@ -38,20 +38,20 @@ void	loadcolor(int *arr, char *s, t_list *head)
 
 	trim = ft_strtrim(s, " \n\t\r");
 	if (!trim)
-		return (ft_putstr_fd("Error Malloc\n", 1), ft_lstclear(&head, free), \
+		return (ft_putstr_fd("Error\nMalloc\n", 1), ft_lstclear(&head, free), \
 		exit(1));
 	split = ft_split(trim, ',');
 	if (!split)
-		return (ft_putstr_fd("Error Malloc\n", 1), ft_lstclear(&head, free), \
+		return (ft_putstr_fd("Error\nMalloc\n", 1), ft_lstclear(&head, free), \
 		free(trim), exit(1));
 	if (char2dlen(split) != 3)
-		return (ft_putstr_fd("Error color\n", 1), ft_lstclear(&head, free), \
+		return (ft_putstr_fd("Error\ncolor\n", 1), ft_lstclear(&head, free), \
 		free(trim), freesplit(split), exit(1));
 	i = -1;
 	while (++i < 3)
 	{
 		if (!parsenum(split[i], arr + i))
-			return (ft_putstr_fd("Error color\n", 1), ft_lstclear(&head, free), \
+			return (ft_putstr_fd("Error\ncolor\n", 1), ft_lstclear(&head, free), \
 			free(trim), freesplit(split), exit(1));
 	}
 	return (free(trim), freesplit(split));
