@@ -39,21 +39,22 @@ bool	isemptystr(char *s)
 	return (true);
 }
 
-void	checknfree(t_list *head, char *ans, int fd)
+void	checknfree(t_list **head, char **ans, int fd)
 {
 	t_list	*cp;
 	int			i;
 
+	free(*ans);
+	*ans = NULL;
 	i = 0;
 	if (!head)
 		return (free(ans));
-	cp = head;
+	cp = *head;
 	while (cp && ++i >= 0)
 		cp = cp->next;
-	free(ans);
-	ans = NULL;
 	if (i >= 7)
-		return (ft_lstclear(&head, free), closefile(fd), \
+		return (ft_lstclear(head, free), closefile(fd), \
+		get_next_line(fd), \
 		ft_putstr_fd("Error\nParsing\n", 1), exit(1));
 }
 
@@ -78,7 +79,7 @@ t_list	*openfile(const char *dir)
 			ft_lstadd_back(&head, cp);
 		}
 		else
-			checknfree(head, ans, fd);
+			checknfree(&head, &ans, fd);
 		ans = get_next_line(fd);
 	}
 	return (closefile(fd), head);
