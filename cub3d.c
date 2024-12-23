@@ -36,7 +36,9 @@ int	main(int ac, char **av)
 	t_game	game;
 
 	checking(ac, av, &game);
-	checkmap(&game);
+	if (!checkmap(&game))
+		return (freegamemap(&game), \
+		ft_putstr_fd("Error\ninvalid map\n", 1), 1);
 	ft_bzero(&data, sizeof(t_data));
 	data.my_map = game.map;
 	data.ceiling_color = get_hex_color(game.c);

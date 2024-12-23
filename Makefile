@@ -98,4 +98,5 @@ t1: ${NAME}
 	for map in maps/*.cub; do echo -n "$$map" ": ";./cub3D "$$map";echo "\n";  done
 
 leak: ${NAME}
-	valgrind --leak-check=full ./cub3D maps/bad/color_missing_ceiling_rgb.cub
+	valgrind --leak-check=full --show-leak-kinds=all --show-reachable=yes ./cub3D maps/test.cub
+#	valgrind --leak-check=full ./cub3D maps/bad/color_missing_ceiling_rgb.cub

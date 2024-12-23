@@ -30,7 +30,7 @@ void	checking(int ac, char *av[], t_game *game)
 		return (ft_putstr_fd("Error\nincorrect file\n", 1), exit(1));
 	content = openfile(av[1]);
 	if (!content)
-		return (ft_putstr_fd("Error\nFile error", 1), exit(1));
+		return (ft_putstr_fd("Error\nFile error\n", 1), exit(1));
 	loadvar(content, game);
 	loadmap(content, game);
 	ft_lstclear(&content, free);
