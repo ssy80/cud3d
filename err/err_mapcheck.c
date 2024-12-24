@@ -62,10 +62,10 @@ bool	validmap(t_game *game)
 	while (++i < 2001)
 		visit[i] = ft_calloc(2001, sizeof(bool));
 	if (game->row > 2000 || game->col > 2000)
-		return (ft_putstr_fd("map too big\n", 1), false);
+		return (ft_putstr_fd("map too big\n", 1), freeboolean(visit), false);
 	findstartpos(game);
 	if (dfs(game, visit, game->pr, game->pc))
-		return (false);
+		return (freeboolean(visit), false);
 	r = -1;
 	while (++r < game->row)
 	{
