@@ -18,7 +18,7 @@ void	freeboolean(bool **s)
 	int	i;
 
 	i = -1;
-	while (s[++i])
+	while (++i < 2001)
 	{
 		free(s[i]);
 		s[i] = NULL;
