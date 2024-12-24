@@ -13,6 +13,20 @@
 #include "../header/cub3d.h"
 #include "../header/libft.h"
 
+void	freeboolean(bool **s)
+{
+	int	i;
+
+	i = -1;
+	while (s[++i])
+	{
+		free(s[i]);
+		s[i] = NULL;
+	}
+	free(s);
+	s = NULL;
+}
+
 void	freesplit(char **s)
 {
 	int	i;

@@ -37,7 +37,7 @@ void	findstartpos(t_game *game)
 }
 
 // depth first search for space and out of map
-bool	dfs(t_game *game, bool visit[2000][2000], int r, int c)
+bool	dfs(t_game *game, bool **visit, int r, int c)
 {
 	if (r < 0 || c < 0 || r >= game->row \
 	|| c >= game->col || game->map[r][c] == ' ')
@@ -52,11 +52,15 @@ bool	dfs(t_game *game, bool visit[2000][2000], int r, int c)
 // check that map is enclosed
 bool	validmap(t_game *game)
 {
-	bool	visit[2000][2000];
+	bool	**visit;
 	int		r;
 	int		c;
+	int		i;
 
-	ft_bzero(visit, sizeof(bool) * 2000 * 2000);
+	i = -1;
+	visit = ft_calloc(2001, sizeof(bool *));
+	while (++i < 2001)
+		visit[i] = ft_calloc(2001, sizeof(bool));
 	if (game->row > 2000 || game->col > 2000)
 		return (ft_putstr_fd("map too big\n", 1), false);
 	findstartpos(game);
@@ -69,9 +73,9 @@ bool	validmap(t_game *game)
 		while (++c < game->col)
 			if (!visit[r][c] && game->map[r][c] == '0')
 				if (dfs(game, visit, r, c))
-					return (false);
+					return (freeboolean(visit), false);
 	}
-	return (true);
+	return (freeboolean(visit), true);
 }
 
 // check map for wrong character

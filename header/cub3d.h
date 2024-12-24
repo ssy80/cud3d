@@ -218,7 +218,7 @@ void		smart_ptr(void *ptr, int action);
 // error handling
 void		checking(int ac, char *av[], t_game *game);
 void		findstartpos(t_game *game);
-bool		dfs(t_game *game, bool visit[2000][2000], int r, int c);
+bool		dfs(t_game *game, bool **visit, int r, int c);
 bool		validmap(t_game *game);
 bool		checkmap(t_game *game);
 bool		checkcolorval(char *str);
@@ -226,6 +226,7 @@ void		loadcolor(int *arr, char *s, t_list *head);
 // helper func
 int			max(int a, int b);
 void		freesplit(char **s);
+void		freeboolean(bool **s);
 void		freetmparr(char **tmp);
 void		freegamemap(t_game *game);
 int			char2dlen(char **s);
