@@ -39,6 +39,19 @@ bool	isemptystr(char *s)
 	return (true);
 }
 
+static void	endgnl(int fd)
+{
+	char	*ans;
+
+	ans = get_next_line(fd);
+	while (ans)
+	{
+		free(ans);
+		ans = get_next_line(fd);
+	}
+	ans = NULL;
+}
+
 void	checknfree(t_list **head, char **ans, int fd)
 {
 	t_list	*cp;
@@ -54,7 +67,7 @@ void	checknfree(t_list **head, char **ans, int fd)
 		cp = cp->next;
 	if (i >= 7)
 		return (ft_lstclear(head, free), closefile(fd), \
-		get_next_line(fd), \
+		free(get_next_line(fd)), endgnl(fd), \
 		ft_putstr_fd("Error\nParsing\n", 1), exit(1));
 }
 
