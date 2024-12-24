@@ -6,7 +6,7 @@
 /*   By: yoong <yoong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:43:51 by yoong             #+#    #+#             */
-/*   Updated: 2024/12/03 12:44:06 by yoong            ###   ########.fr       */
+/*   Updated: 2024/12/24 11:44:06 by ssian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool	isemptystr(char *s)
 void	checknfree(t_list **head, char **ans, int fd)
 {
 	t_list	*cp;
-	int			i;
+	int		i;
 
 	free(*ans);
 	*ans = NULL;
